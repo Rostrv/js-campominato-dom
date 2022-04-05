@@ -90,12 +90,13 @@ function onSingleCellClick() {
 
     if (bombe.includes(currentCell)) {
         this.classList.add("boom");
+
         alert("Sei esploso");
         alert(`hai totalizzato ${punteggio} punti`)
 
     } else {
         this.classList.add("on_click");
         punteggio++
-
+        console.log('punto' + " " + punteggio)
     }
 }
