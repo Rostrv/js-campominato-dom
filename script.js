@@ -2,16 +2,19 @@ const selectBox = document.getElementById("select_box");
 const btnGame = document.getElementById("gioca");
 const cellContainer = document.querySelector(".container_grid");
 
-const bombe = []
+let bombe = []
 let punteggio = 0
-
+let counterBlueBox = 0
+let level
+let boxes = 0
+let numCell
 
 btnGame.addEventListener("click", function() {
     cellContainer.innerHTML = "";
 
-    difficoltà = selectBox.value;
+    difficult = selectBox.value;
 
-    const totalCell = cellsNum(difficoltà);
+    const totalCell = cellsNum(difficult);
 
     const cellPerRow = Math.sqrt(totalCell);
     const cellSize = 100 / cellPerRow;
@@ -21,6 +24,7 @@ btnGame.addEventListener("click", function() {
         const innerSpan = document.createElement("span");
 
         cell.classList.add("cell");
+        cell.setAttribute('id', i + 1)
         cell.style.height = cellSize + "%";
         cell.style.width = cellSize + "%";
         innerSpan.textContent = i + 1;
@@ -35,6 +39,7 @@ btnGame.addEventListener("click", function() {
     }
 
     //generatore bombe
+    bombe = []
     for (let b = 0; b < 16; b++) {
         const randomNum = Math.floor(Math.random() * (totalCell - 1 + 1)) + 1;
         const newBomb = randomNum;
@@ -50,24 +55,27 @@ btnGame.addEventListener("click", function() {
     }
     console.log(bombe);
 
-
 });
 
 
-function cellsNum(difficoltà) {
+function cellsNum(difficult) {
 
-    if ((difficoltà) === 'facile') {
-        let numCell = 100;
-        // console.log("numero celle " + numCell);
+    if ((difficult) === 'facile') {
+        numCell = 100;
+        level = 'facile'
+            // console.log("numero celle " + numCell);
         return numCell;
     }
-    if ((difficoltà) === 'media') {
-        let numCell = 81;
-        // console.log("numero celle " + numCell);
+    if ((difficult) === 'media') {
+        numCell = 81;
+        level = 'media'
+            // console.log("numero celle " + numCell);
         return numCell;
     }
-    if ((difficoltà) === 'difficile') {
-        let numCell = 49;
+    if ((difficult) === 'difficile') {
+        numCell = 49;
+        level = 'difficile'
+
         //console.log("numero celle " + numCell);
         return numCell;
     }
@@ -82,6 +90,25 @@ function cellClick() {
 }
 
 
+function checkBlueBox(level) {
+
+    if (level == 'facile') {
+        boxes = 100 - 16
+    }
+    if (level == 'media') {
+        boxes = 81 - 16
+    }
+    if (level == 'difficile') {
+        boxes = 49 - 16
+    }
+
+
+    if (counterBlueBox == boxes) {
+        console.log('true')
+        alert('Hai vinto!')
+    }
+}
+
 function onSingleCellClick() {
 
     const currentCell = parseInt(this.textContent);
@@ -90,13 +117,18 @@ function onSingleCellClick() {
 
     if (bombe.includes(currentCell)) {
         this.classList.add("boom");
-
         alert("Sei esploso");
         alert(`hai totalizzato ${punteggio} punti`)
+
+
 
     } else {
         this.classList.add("on_click");
         punteggio++
+        counterBlueBox++
         console.log('punto' + " " + punteggio)
+
     }
+
+    checkBlueBox(level);
 }
