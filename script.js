@@ -40,7 +40,7 @@ btnGame.addEventListener("click", function() {
 
     //generatore bombe
     bombe = []
-    for (let b = 0; b < 16; b++) {
+    for (let b = 1; b <= 16; b++) {
         const randomNum = Math.floor(Math.random() * (totalCell - 1 + 1)) + 1;
         const newBomb = randomNum;
         const existNum = bombe.includes(newBomb);
